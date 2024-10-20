@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import com.pcwk.ehr.admin.MovieDaoMain;
+import com.pcwk.ehr.booking.Booking;
+import com.pcwk.ehr.booking.BookingMain;
 
 public class GenreMain {
 	public void showMenu() {
@@ -28,6 +30,13 @@ public class GenreMain {
 					GenreList.movieAll(genreInput); // 입력받은 장르에 따라 영화 출력
 					break;
 
+				case 2:
+					System.out.print("예매: ");
+					Booking booking = new Booking();
+					booking.bookingMovie();
+					
+					break;
+					
 				case 3:
 					// 메인 메뉴 구현 후 테스트 필요
 					System.out.println("메인 메뉴로 돌아갑니다.");
