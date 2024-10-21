@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MovieDao implements MovieDiv<MovieVO> {
     // CSV 파일 경로 설정
-    private final String fileName = "C:\\2024_09_09\\01_JAVA\\WORKSPACE\\miniproject\\movieList2.csv";
+    private final String fileName = "D:\\JAP_20240909\\01_JAVA\\workspace\\2_mini_project\\miniproject\\movieList2.csv";
     // 영화 목록을 저장할 리스트
     public static List<MovieVO> movies = new ArrayList<>();
 
