@@ -1,231 +1,192 @@
 package com.pcwk.ehr.admin;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.Scanner;
 
 public class MovieDaoMain {
 
-    private MovieDao dao = null;
+    private static MovieDao dao = new MovieDao();
+    private static Scanner scanner = new Scanner(System.in);
 
-    public MovieDaoMain() {
-        dao = new MovieDao(); // MovieDao 사용
-    }
+    public static void main(String[] args) {
+        while (true) {
+            System.out.println("\n-------영화 관리 시스템--------\n");
+            System.out.println("1. 영화 등록");
+            System.out.println("2. 영화 수정");
+            System.out.println("3. 영화 삭제");
+            System.out.println("4. 영화 목록 보기");
+            System.out.println("5. 종료");
+            System.out.print("선택: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // consume the newline character
 
-    // 사용자 입력을 받아 영화 정보를 생성
-    private MovieVO createMovieFromInput() {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-        
-        try {
-            System.out.print("영화 제목을 입력하세요: ");
-            String title = reader.readLine();
-            if (title.isEmpty()) throw new IllegalArgumentException("제목을 입력해야 합니다.");
-
-            System.out.print("영화 장르를 입력하세요: ");
-            String genre = reader.readLine();
-            if (genre.isEmpty()) throw new IllegalArgumentException("장르를 입력해야 합니다.");
-
-            System.out.print("상영 등급을 입력하세요: ");
-            int age = Integer.parseInt(reader.readLine());
-
-            System.out.print("영화 평점을 입력하세요 (없으면 0 입력): ");
-            double rating = Double.parseDouble(reader.readLine());
-
-            System.out.print("영화 상영 시작일(yyyy.MM.dd HH:mm)을 입력하세요: ");
-            Date startDate = sdf.parse(reader.readLine());
-
-            System.out.print("영화 상영 종료일(yyyy.MM.dd HH:mm)을 입력하세요: ");
-            Date endDate = sdf.parse(reader.readLine());
-
-            return new MovieVO(title, genre, age, rating, startDate, endDate);
-        } catch (IOException | ParseException | IllegalArgumentException e) {
-            System.out.println("입력 오류: " + e.getMessage());
-            return null;
+            switch (choice) {
+                case 1:
+                    doSave();
+                    break;
+                case 2:
+                    doUpdate();
+                    break;
+                case 3:
+                    doDelete();
+                    break;
+                case 4:
+                    showAllMovies();
+                    break;
+                case 5:
+                    System.out.println("종료합니다.");
+                    return;
+                default:
+                    System.out.println("잘못된 선택입니다.");
+            }
         }
     }
 
-    public void doSave() {
+    public static void doSave() {
         System.out.println("영화 등록");
-        MovieVO movie = createMovieFromInput(); // 사용자 입력으로 영화 객체 초기화
+        MovieVO movie = createMovieFromInput(); // 사용자 입력으로 영화 객체 생성
         if (movie != null) {
-            int flag = dao.doSave(movie);
+            System.out.print("상영 시간을 입력하세요: ");
+            String timeInput = scanner.nextLine();
+            int flag = dao.doSave(movie, timeInput); // DAO를 통해 영화 저장
             if (flag == 2) {
-                System.out.println(movie.getTitle() + " 중복");
+                System.out.println("영화가 이미 존재합니다.");
             } else if (flag == 0) {
                 System.out.println(movie.getTitle() + " 등록 실패");
             } else {
+                // 성공적으로 등록된 경우
                 System.out.println("**************************");
                 System.out.println(movie.getTitle() + " 등록 성공");
                 System.out.println("**************************");
-                dao.writeFile(dao.getFileName()); // 영화 등록 후 CSV 파일에 저장
             }
         } else {
             System.out.println("영화 객체가 초기화되지 않았습니다.");
         }
     }
 
-    public void doDelete() {
-        System.out.println("영화 삭제");
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            System.out.print("삭제할 영화 제목을 입력하세요: ");
-            String title = reader.readLine();
-            if (title.isEmpty()) throw new IllegalArgumentException("제목을 입력해야 합니다.");
-
-            MovieVO movieToDelete = new MovieVO(title, "", 0, 0.0, null, null);
-            int flag = dao.doDelete(movieToDelete);
-            if (flag == 1) {
-                System.out.println("**************************");
-                System.out.println(title + " 삭제 성공");
-                System.out.println("**************************");
-                dao.writeFile(dao.getFileName()); // 영화 삭제 후 CSV 파일에 저장
-            } else {
-                System.out.println(title + " 삭제 실패");
-            }
-        } catch (IOException | IllegalArgumentException e) {
-            System.out.println("입력 오류: " + e.getMessage());
-        }
-    }
-
-    public void doSelectAll() {
-        System.out.println("영화 조회");
-        List<MovieVO> movies = dao.doSelectAll(); // 모든 영화 목록 조회
-        if (movies.isEmpty()) {
-            System.out.println("등록된 영화가 없습니다.");
-        } else {
-            System.out.println("**************************");
-            for (MovieVO movie : movies) {
-                System.out.println(movie); // 영화 목록 출력
-            }
-            System.out.println("**************************");
-        }
-    }
-
-    public void doUpdate() {
+    public static void doUpdate() {
         System.out.println("영화 수정");
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            System.out.print("수정할 영화 제목을 입력하세요: ");
-            String title = reader.readLine();
+        System.out.print("수정할 영화의 제목을 입력하세요: ");
+        String title = scanner.nextLine().trim(); // 입력값의 앞뒤 공백 제거
+        MovieVO existingMovie = null;
 
-            List<MovieVO> movieList = dao.doSelectAll();
-            MovieVO foundMovie = null;
-
-            for (MovieVO movie : movieList) {
-                if (movie.getTitle().equals(title)) {
-                    foundMovie = movie;
-                    break;
-                }
+        // 모든 영화 목록에서 입력한 제목과 일치하는 영화 찾기
+        for (MovieVO movie : dao.doSelectAll()) {
+            if (movie.getTitle().equalsIgnoreCase(title)) { // 대소문자 무시하여 비교
+                existingMovie = movie;
+                break; // 일치하는 영화가 있으면 반복 종료
             }
-
-            if (foundMovie == null) {
-                System.out.println("영화를 찾을 수 없습니다.");
-                return;
-            }
-
-            // 수정할 정보 입력 받기
-            System.out.println("현재 정보: " + foundMovie);
-            System.out.println("수정할 항목을 선택하세요: ");
-            System.out.println("1. 제목");
-            System.out.println("2. 장르");
-            System.out.println("3. 상영 등급");
-            System.out.println("4. 평점");
-            System.out.println("5. 상영 시작일");
-            System.out.println("6. 상영 종료일");
-            System.out.print("선택: ");
-            int choice = Integer.parseInt(reader.readLine());
-
-            switch (choice) {
-                case 1:
-                    System.out.print("새 제목을 입력하세요: ");
-                    String newTitle = reader.readLine();
-                    foundMovie.setTitle(newTitle);
-                    break;
-                case 2:
-                	System.out.print("새 장르를 입력하세요: ");
-                	foundMovie.setGenre(reader.readLine());
-                	break;
-                case 3:
-                	System.out.print("새 상영 등급을 입력하세요: ");
-                	foundMovie.setAge(Integer.parseInt(reader.readLine()));
-                	break;
-                case 4:
-                    System.out.print("새 평점을 입력하세요: ");
-                    foundMovie.setRating(Double.parseDouble(reader.readLine()));
-                    break;
-                case 5:
-                    System.out.print("새 상영 시작일(yyyy.MM.dd HH:mm)을 입력하세요: ");
-                    foundMovie.setStartDate(new SimpleDateFormat("yyyy.MM.dd HH:mm").parse(reader.readLine()));
-                    break;
-                case 6:
-                    System.out.print("새 상영 종료일(yyyy.MM.dd HH:mm)을 입력하세요: ");
-                    foundMovie.setEndDate(new SimpleDateFormat("yyyy.MM.dd HH:mm").parse(reader.readLine()));
-                    break;
-                default:
-                    System.out.println("잘못된 선택입니다.");
-                    return;
-            }
-
-            dao.doUpdate(foundMovie); // 수정된 영화 정보 업데이트
-            dao.writeFile(dao.getFileName()); // CSV 파일에 저장
-            System.out.println("**************************");
-            System.out.println("영화 정보가 수정되었습니다.");
-            System.out.println("**************************");
-        } catch (IOException | NumberFormatException e) {
-            System.out.println("입력 오류: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("수정 오류: " + e.getMessage());
         }
-    }
 
-    public void showMenu() {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        while (true) {
-            try {
-                System.out.println("\n************ 영화 관리 시스템 ************");
-                System.out.println("1. 영화 등록");
-                System.out.println("2. 영화 조회");
-                System.out.println("3. 영화 수정");
-                System.out.println("4. 영화 삭제");
-                System.out.println("5. 종료");
-                System.out.print("메뉴를 선택하세요: ");
-                
-                int choice = Integer.parseInt(reader.readLine());
+        if (existingMovie != null) {
+            boolean updating = true;
+            while (updating) {
+                System.out.println("\n수정할 항목을 선택하세요:");
+                System.out.println("1. 제목");
+                System.out.println("2. 장르");
+                System.out.println("3. 상영 등급");
+                System.out.println("4. 평점");
+                System.out.println("5. 상영 시간");
+                System.out.println("6. 종료");
+                System.out.print("선택: ");
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // consume the newline character
 
                 switch (choice) {
                     case 1:
-                        doSave();
+                        System.out.print("새 제목을 입력하세요: ");
+                        String newTitle = scanner.nextLine();
+                        existingMovie.setTitle(newTitle);
                         break;
                     case 2:
-                        doSelectAll();
+                        System.out.print("새 장르를 입력하세요: ");
+                        String newGenre = scanner.nextLine();
+                        existingMovie.setGenre(newGenre);
                         break;
                     case 3:
-                        doUpdate();
+                        System.out.print("새 상영 등급을 입력하세요: ");
+                        int newAge = scanner.nextInt();
+                        existingMovie.setAge(newAge);
+                        scanner.nextLine(); // consume the newline character
                         break;
                     case 4:
-                        doDelete();
+                        System.out.print("새 평점을 입력하세요: ");
+                        double newRating = scanner.nextDouble();
+                        existingMovie.setRating(newRating);
+                        scanner.nextLine(); // consume the newline character
                         break;
                     case 5:
-                        System.out.println("프로그램을 종료합니다.");
-                        return; // 프로그램 종료
+                        System.out.print("새 상영 시간을 입력하세요: ");
+                        String newTime = scanner.nextLine();
+                        existingMovie.setTime(newTime);
+                        break;
+                    case 6:
+                        updating = false; // 수정 종료
+                        continue;
                     default:
-                        System.out.println("잘못된 선택입니다. 다시 시도하세요.");
+                        System.out.println("잘못된 선택입니다.");
+                        continue;
                 }
-       
-            } catch (IOException | NumberFormatException e) {
-                System.out.println("입력 오류: " + e.getMessage());
+
+                // 수정 완료 후 DAO 호출
+                int flag = dao.doUpdate(existingMovie, existingMovie.getTime()); // 기존 상영 시간을 사용
+                if (flag == 0) {
+                    System.out.println("수정 실패");
+                } else {
+                    System.out.println("수정 성공");
+                }
             }
+        } else {
+            System.out.println("해당 제목의 영화가 존재하지 않습니다.");
         }
     }
 
-    public static void main(String[] args) {
-        MovieDaoMain main = new MovieDaoMain();
-        main.showMenu(); // 메뉴 표시
+
+    public static void doDelete() {
+        System.out.println("영화 삭제");
+        System.out.print("삭제할 영화의 제목을 입력하세요: ");
+        String title = scanner.nextLine();
+        MovieVO movie = new MovieVO(); // 기본 생성자를 사용하여 초기화
+        movie.setTitle(title);
+        int flag = dao.doDelete(movie); // DAO를 통해 영화 삭제
+        if (flag == 0) {
+            System.out.println(movie.getTitle() + " 삭제 실패");
+        } else {
+            System.out.println(movie.getTitle() + " 삭제 성공");
+        }
     }
+
+    public static void showAllMovies() {
+        System.out.println("영화 목록");
+        for (MovieVO movie : dao.doSelectAll()) {
+            System.out.println(movie);
+        }
+    }
+
+    private static MovieVO createMovieFromInput() {
+        MovieVO movie = new MovieVO(null, null, 0, null, null, null, null); // 생성자를 사용하여 초기화
+        System.out.print("영화 제목: ");
+        String title = scanner.nextLine();
+        movie.setTitle(title);
+
+        System.out.print("장르: ");
+        String genre = scanner.nextLine();
+        movie.setGenre(genre);
+
+        System.out.print("상영 등급 (예: 12, 15): ");
+        int age = scanner.nextInt();
+        movie.setAge(age);
+        scanner.nextLine(); // consume the newline character
+
+        System.out.print("평점 (예: 8.5): ");
+        double rating = scanner.nextDouble();
+        movie.setRating(rating);
+        scanner.nextLine(); // consume the newline character
+
+        return movie; // 영화 객체 반환
+    }
+
+	public void showMenu() {
+		// TODO Auto-generated method stub
+		
+	}
 }
- 

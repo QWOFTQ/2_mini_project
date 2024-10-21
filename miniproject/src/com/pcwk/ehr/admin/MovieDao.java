@@ -1,211 +1,256 @@
 package com.pcwk.ehr.admin;
 
-import java.io.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MovieDao implements MovieDiv<MovieVO> {
-
     // CSV 파일 경로 설정
     private final String fileName = "C:\\2024_09_09\\01_JAVA\\WORKSPACE\\miniproject\\movieList2.csv";
-    
-    // 영화 정보를 저장할 리스트
+    // 영화 목록을 저장할 리스트
     public static List<MovieVO> movies = new ArrayList<>();
 
-    // 생성자: MovieDao 객체가 생성될 때 파일에서 영화 목록을 읽어온다.
+    // 생성자: 영화 목록을 파일에서 읽어옴
     public MovieDao() {
         super();
-        readFile(fileName); // 파일에서 영화 목록 읽기
+        readFile(fileName);
     }
 
-    // 모든 영화 조회 메서드
+    // 전체 영화 목록 반환
     public ArrayList<MovieVO> doSelectAll() {
-        return new ArrayList<>(movies); // 현재 저장된 모든 영화 목록 반환
+        return new ArrayList<>(movies);
     }
 
-    // 영화 제목이 중복되는지 확인하는 메서드
+    // 영화 존재 여부 확인
     private boolean isExistsMovie(MovieVO movie) {
         for (MovieVO vo : movies) {
-            // 대소문자 구분 없이 제목 비교
             if (vo.getTitle().equalsIgnoreCase(movie.getTitle())) {
-                return true; // 중복된 제목이 있으면 true 반환
+                return true; // 영화가 존재함
             }
         }
-        return false; // 중복이 없으면 false 반환
+        return false; // 영화가 존재하지 않음
     }
 
-    // 영화 저장 메서드
-    @Override
-    public int doSave(MovieVO param) {
-        // 중복된 영화 제목 체크
-        if (isExistsMovie(param)) {
-            return 2; // 중복된 영화 제목
+    // 영화 저장 메소드
+    public int doSave(MovieVO param, String timeInput) {
+        // 좌석 수 유효성 검사
+        if (param.getSeat() == null || param.getSeat() < 0) {
+            System.out.println("좌석 수는 0 이상이어야 합니다.");
+            return 0; // 저장 실패
         }
 
-        // 영화 목록에 추가
-        boolean check = movies.add(param); 
-        // 추가 성공 여부에 따라 flag 설정
-        int flag = check ? 1 : 0; 
-        // 파일에 변경 사항 저장
-        writeFile(fileName); 
-        return flag; // 추가 결과 반환
+        // 영화가 이미 존재하는지 확인
+        if (isExistsMovie(param)) {
+            return 2; // 영화가 이미 존재함
+        }
+
+        // 현재 날짜와 사용자 입력 시간 설정
+        LocalDate currentDate = LocalDate.now();
+        param.setStartDate(currentDate); // 시작 날짜 설정
+        param.setTime(timeInput); // 상영 시간 설정
+
+        // 영화 목록에 추가하고 파일에 저장
+        boolean check = movies.add(param);
+        int flag = check ? 1 : 0;
+        writeFile(fileName); // 파일에 기록
+        return flag; // 성공 여부 반환
     }
 
-    // 영화 업데이트 메서드
+    // 영화 수정 메소드
     @Override
-    public int doUpdate(MovieVO param) {
-        String paramTitle = param.getTitle().trim(); // 입력 제목의 공백 제거
+    public int doUpdate(MovieVO param, String timeInput) {
+        String paramTitle = param.getTitle().trim();
         for (MovieVO movie : movies) {
-            // 영화 제목 비교
             if (movie.getTitle().trim().equalsIgnoreCase(paramTitle)) {
-                // 모든 정보를 업데이트
+                // 좌석 수 유효성 검사
+                if (param.getSeat() == null || param.getSeat() < 0) {
+                    System.out.println("좌석 수는 0 이상이어야 합니다.");
+                    return 0; // 수정 실패
+                }
+                // 수정할 영화의 속성 업데이트
                 movie.setTitle(param.getTitle());
                 movie.setGenre(param.getGenre());
                 movie.setAge(param.getAge());
                 movie.setRating(param.getRating());
-                movie.setStartDate(param.getStartDate());
-                movie.setEndDate(param.getEndDate());
-                return 1; // 업데이트 성공
+                movie.setTime(timeInput); // 수정된 상영 시간
+                movie.setSeat(param.getSeat()); // 수정된 좌석 수
+                writeFile(fileName); // 파일에 기록
+                return 1; // 수정 성공
             }
         }
-        return 0; // 업데이트 실패
+        return 0; // 수정 실패
     }
 
-    // 영화 삭제 메서드
+    // 영화 삭제 메소드
     @Override
     public int doDelete(MovieVO param) {
-        // 대소문자 구분 없이 영화 제목으로 삭제
-        boolean removed = movies.removeIf(movie -> movie.getTitle().equalsIgnoreCase(param.getTitle())); 
+        // 영화 제목으로 삭제
+        boolean removed = movies.removeIf(movie -> movie.getTitle().equalsIgnoreCase(param.getTitle()));
         if (removed) {
-            // 파일에 변경 사항 저장
-            writeFile(fileName); 
-            return 1; // 성공
+            writeFile(fileName); // 삭제 후 파일에 기록
+            return 1; // 삭제 성공
         } else {
-            // 삭제 실패 시 메시지 출력
-            System.out.println("삭제할 영화가 존재하지 않습니다."); 
-            return 0; // 실패
+            System.out.println("삭제할 영화가 존재하지 않습니다.");
+            return 0; // 삭제 실패
         }
     }
 
-    // 문자열을 MovieVO 객체로 변환하는 메서드
+    // 문자열을 MovieVO 객체로 변환하는 메소드
     public MovieVO stringToMovie(String data) {
-        // CSV의 각 필드를 분리하여 배열로 저장
-        String[] movieArr = data.split(","); 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+        String[] movieArr = data.split(",");
 
-        // 최소한 3개의 필드(title, genre, age)가 필요합니다.
+        // 필수 정보 확인
         if (movieArr.length < 3) {
             System.out.println("데이터 형식 오류: " + data);
-            return null; // 오류 발생 시 null 반환
+            return null;
         }
 
-        // 제목, 장르, 나이 정보 가져오기
+        // 영화 정보 추출 및 정리
         String title = movieArr[0].trim();
         String genre = movieArr[1].trim();
-        
-        // 나이는 반드시 정수여야 하므로 기본값 설정
-        int age = 0; 
-        if (!movieArr[2].trim().isEmpty()) {
-            try {
-                age = Integer.parseInt(movieArr[2].trim());
-                if (age < 0) {
-                    System.out.println("상영 등급 오류: " + movieArr[2]); // 음수 체크
-                    return null; // 잘못된 경우 null 반환
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("상영 등급 오류: " + movieArr[2]);
-                return null; // 잘못된 경우 null 반환
-            }
-        }
+        int age = parseAge(movieArr[2]); // 나이 파싱
+        Double rating = parseDouble(movieArr[3]); // 평점 파싱
+        String time = parseTime(movieArr); // 시간 파싱
+        Integer seat = parseSeat(movieArr); // 좌석 파싱
 
-        // 평점, 시작일, 종료일 기본값 설정
-        Double rating = null; 
-        Date startDate = null; 
-        Date endDate = null; 
+        LocalDate startDate = LocalDate.now(); // 현재 날짜로 설정
 
-        // 평점, 시작일, 종료일을 선택적으로 읽기
-        if (movieArr.length > 3 && !movieArr[3].trim().isEmpty()) {
-            try {
-                rating = Double.parseDouble(movieArr[3].trim());
-            } catch (NumberFormatException e) {
-                System.out.println("평점 형식 오류: " + movieArr[3]);
-                return null; // 잘못된 경우 null 반환
-            }
-        }
-
-        try {
-            // 시작일, 종료일 변환
-            if (movieArr.length > 4 && !movieArr[4].trim().isEmpty()) {
-                startDate = sdf.parse(movieArr[4].trim());
-            }
-            if (movieArr.length > 5 && !movieArr[5].trim().isEmpty()) {
-                endDate = sdf.parse(movieArr[5].trim());
-            }
-        } catch (ParseException e) {
-            System.out.println("날짜 형식 오류: " + e.getMessage());
-            return null; // 잘못된 경우 null 반환
-        }
-
-        // MovieVO 객체 반환
-        return new MovieVO(title, genre, age, rating, startDate, endDate); 
+        return new MovieVO(title, genre, age, rating, startDate, time, seat);
     }
 
-    // 파일에서 영화 정보를 읽는 메서드
+    // 나이 파싱 메소드
+    private int parseAge(String ageStr) {
+        if (ageStr.trim().isEmpty()) {
+            return 0;
+        }
+        try {
+            return Integer.parseInt(ageStr.trim());
+        } catch (NumberFormatException e) {
+            System.out.println("상영 등급 오류: " + ageStr);
+            return 0;
+        }
+    }
+
+    // 평점 파싱 메소드
+    private Double parseDouble(String ratingStr) {
+        if (ratingStr.trim().isEmpty()) {
+            return null;
+        }
+        try {
+            return Double.parseDouble(ratingStr.trim());
+        } catch (NumberFormatException e) {
+            System.out.println("평점 형식 오류: " + ratingStr);
+            return null;
+        }
+    }
+
+    // 시간 파싱 메소드
+    private String parseTime(String[] movieArr) {
+        if (movieArr.length > 5 && !movieArr[5].trim().isEmpty()) {
+            return movieArr[5].trim();
+        }
+        return null;
+    }
+
+    // 좌석 파싱 메소드
+    private Integer parseSeat(String[] movieArr) {
+        if (movieArr.length > 6 && !movieArr[6].trim().isEmpty()) {
+            try {
+                return Integer.parseInt(movieArr[6].trim());
+            } catch (NumberFormatException e) {
+                System.out.println("좌석 수 오류: " + movieArr[6]);
+                return null;
+            }
+        }
+        return null; // 기본 좌석 수는 null
+    }
+
+    // 파일에서 영화 목록 읽기
     @Override
     public int readFile(String path) {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String data;
-            br.readLine(); // 첫 번째 줄(헤더) 건너뛰기
+            br.readLine(); // 헤더 스킵
             while ((data = br.readLine()) != null) {
-                // 문자열을 MovieVO로 변환
-                MovieVO outVo = stringToMovie(data); 
+                MovieVO outVo = stringToMovie(data); // 문자열을 MovieVO로 변환
                 if (outVo != null) {
-                    movies.add(outVo); // 영화 목록에 추가
+                    movies.add(outVo); // 유효한 영화만 추가
                 }
             }
         } catch (IOException e) {
-            System.out.println("IOException:" + e.getMessage());
+            System.out.println("IOException: " + e.getMessage());
         }
-
-        // 영화정보 전체 조회:
-        // displayList(movies); // 이 부분을 주석 처리합니다.
-        return movies.size(); // 읽은 영화의 개수 반환
+        return movies.size(); // 읽은 영화 수 반환
     }
 
-    // 영화 정보를 파일에 쓰는 메서드
+    // 영화 목록을 파일에 쓰기
     @Override
     public int writeFile(String path) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
-            // 헤더 작성
-            bw.write("title,genre,age,rating,startDate,endDate");
-            bw.newLine(); // 줄바꿈
+            // CSV 헤더 작성
+            bw.write("title,genre,age,rating,startDate,time,seat");
+            bw.newLine();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd(EEEE)"); // 날짜 형식 설정
+
             for (MovieVO movie : movies) {
+                // 각 영화의 정보를 CSV 형식으로 작성
                 StringBuilder sb = new StringBuilder();
-                // 영화 정보를 CSV 형식으로 저장
                 sb.append(movie.getTitle()).append(",")
                   .append(movie.getGenre()).append(",")
                   .append(movie.getAge()).append(",")
                   .append(movie.getRating() != null ? movie.getRating() : "").append(",")
-                  .append(movie.getStartDate() != null ? new SimpleDateFormat("yyyy.MM.dd HH:mm").format(movie.getStartDate()) : "").append(",")
-                  .append(movie.getEndDate() != null ? new SimpleDateFormat("yyyy.MM.dd HH:mm").format(movie.getEndDate()) : "");
-                bw.write(sb.toString()); // 파일에 쓰기
-                bw.newLine(); // 줄바꿈
+                  .append(movie.getStartDate() != null ? movie.getStartDate().format(formatter) : "").append(",")
+                  .append(movie.getTime() != null ? movie.getTime() : "").append(",") // 시간 추가
+                  .append(movie.getSeat()); // 좌석 수 추가
+
+                bw.write(sb.toString());
+                bw.newLine(); // 다음 줄로 이동
             }
         } catch (IOException e) {
-            System.out.println("IOException:" + e.getMessage());
+            System.out.println("IOException: " + e.getMessage());
         }
-        return movies.size(); // 저장된 영화의 개수 반환
+        return movies.size(); // 파일에 쓴 영화 수 반환
     }
 
-    // 파일 이름 반환 메서드
-    public String getFileName() {
-        return fileName;
+    @Override
+    public int doUpdate(MovieVO param) {
+        return doUpdate(param, param.getTime()); // 기존 doUpdate 메소드 호출
+    }
+
+    // 제목으로 영화 선택
+    @Override
+    public MovieVO doSelectAll(String title) {
+        for (MovieVO movie : movies) {
+            if (movie.getTitle().equalsIgnoreCase(title)) {
+                return movie; // 제목이 일치하는 영화 반환
+            }
+        }
+        return null; // 영화가 존재하지 않음
     }
 
     @Override
     public int doSelectAll(MovieVO param) {
-        // 이 메서드는 현재 사용되지 않음
-        return 0; 
+        // 이 메소드는 필요에 따라 구현해 주시면 됩니다.
+        return 0;
+    }
+
+    // 영화 저장 메소드 (미구현)
+    @Override
+    public int doSave(MovieVO param) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    // 제목으로 영화 선택 (미구현)
+    @Override
+    public MovieVO doSelectByTitle(String title) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
