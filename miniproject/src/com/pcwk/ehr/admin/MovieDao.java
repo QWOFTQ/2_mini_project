@@ -40,7 +40,7 @@ public class MovieDao implements MovieDiv<MovieVO> {
     // 영화 저장 메소드
     public int doSave(MovieVO param, String timeInput) {
         // 좌석 수 유효성 검사
-        if (param.getSeat() == null || param.getSeat() < 0) {
+        if (param.getSeat() == null) {
             System.out.println("좌석 수는 0 이상이어야 합니다.");
             return 0; // 저장 실패
         }
@@ -69,7 +69,7 @@ public class MovieDao implements MovieDiv<MovieVO> {
         for (MovieVO movie : movies) {
             if (movie.getTitle().trim().equalsIgnoreCase(paramTitle)) {
                 // 좌석 수 유효성 검사
-                if (param.getSeat() == null || param.getSeat() < 0) {
+                if (param.getSeat() == null) {
                     System.out.println("좌석 수는 0 이상이어야 합니다.");
                     return 0; // 수정 실패
                 }
@@ -117,7 +117,7 @@ public class MovieDao implements MovieDiv<MovieVO> {
         int age = parseAge(movieArr[2]); // 나이 파싱
         Double rating = parseDouble(movieArr[3]); // 평점 파싱
         String time = parseTime(movieArr); // 시간 파싱
-        Integer seat = parseSeat(movieArr); // 좌석 파싱
+        String seat = movieArr[6].trim(); // 좌석 파싱
 
         LocalDate startDate = LocalDate.now(); // 현재 날짜로 설정
 

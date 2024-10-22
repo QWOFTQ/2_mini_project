@@ -1,42 +1,42 @@
-package com.pcwk.ehr.genre;
+package com.pcwk.ehr.rating;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import com.pcwk.ehr.admin.MovieDaoMain;
+import com.pcwk.ehr.admin.MovieVO;
 import com.pcwk.ehr.booking.Booking;
-import com.pcwk.ehr.booking.BookingMain;
+import com.pcwk.ehr.rating.Rating;
 
-public class GenreMain {
+
+public class RatingMain {
 	public void showMenu() {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		GenreList genre = new GenreList(); // GenreList 인스턴스 생성
+		Rating rating = new Rating(); // Rating 인스턴스 생성
 		while (true) {
 			try {
-				System.out.println("\n************ 장르별 영화 조회 시스템 ************\n");
-				System.out.println("1. 장르별 영화 조회");
+				System.out.println("\n************ 평점별 영화 조회 시스템 ************\n");
+				System.out.println("1. 평점별 영화 조회");
 				System.out.println("2. 예매");
 				System.out.println("3. 메인 메뉴");
 				System.out.println("4. 종료");
-				System.out.print("\n 메뉴를 선택하세요: \n ");
+				System.out.print("\n메뉴를 선택하세요: ");
 
 				int choice = Integer.parseInt(reader.readLine());
 
 				switch (choice) {
 				case 1:
-					System.out.print("조회할 장르를 입력하세요: ");
-					String genreInput = reader.readLine(); // 사용자로부터 장르 입력 받기
-					GenreList.movieAll(genreInput); // 입력받은 장르에 따라 영화 출력
+					
+					rating.rating();
 					break;
 
 				case 2:
 					System.out.print("예매: ");
 					Booking booking = new Booking();
 					booking.bookingMovie();
-					
 					break;
-					
 				case 3:
 					// 메인 메뉴 구현 후 테스트 필요
 					System.out.println("메인 메뉴로 돌아갑니다.");
@@ -58,7 +58,7 @@ public class GenreMain {
 	}
 
 	public static void main(String[] args) {
-		GenreMain main = new GenreMain();
+		RatingMain main = new com.pcwk.ehr.rating.RatingMain();
 		main.showMenu(); // 메뉴 표시
 	}
 }

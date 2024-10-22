@@ -9,16 +9,16 @@ public class MovieVO {
     private Double rating;
     private LocalDate startDate;
     private String time;
-    private Integer seat; // Integer로 변경하여 null 체크 가능
+    private String seat; 
 
-    public MovieVO(String title, String genre, int age, Double rating, LocalDate startDate, String time, Integer seat) {
+    public MovieVO(String title, String genre, int age, Double rating, LocalDate startDate, String time, String seat) {
         this.title = title;
         this.genre = genre;
         this.age = age;
         this.rating = rating;
         this.startDate = startDate != null ? startDate : LocalDate.now(); // 현재 날짜로 설정
         this.time = time;
-        this.seat = (seat != null && seat >= 0) ? seat : 0; // 0 이상이면 설정, 아니면 0
+        this.seat = seat; 
     }
 
     public MovieVO() {
@@ -74,11 +74,11 @@ public class MovieVO {
         this.time = time;
     }
 
-    public Integer getSeat() {
+    public String getSeat() {
         return seat;
     }
 
-    public void setSeat(Integer seat) {
+    public void setSeat(String seat) {
         this.seat = seat;
     }
 

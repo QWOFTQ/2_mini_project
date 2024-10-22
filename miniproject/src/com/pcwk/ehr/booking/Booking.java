@@ -22,7 +22,7 @@ public class Booking {
 
         // 현재 날짜와 시간 출력
         System.out.println("현재 시간: " + dateFormatter.format(currentDate) + " " + currentTime.format(timeFormatter));
-        System.out.println("예매 가능한 영화 목록:");
+        System.out.println("\n ******예매 가능한 영화 목록****** \n");
 
         ArrayList<MovieVO> availableMovies = new ArrayList<>(); // 예매 가능한 영화 리스트
 
@@ -55,7 +55,7 @@ public class Booking {
         }
 
         try (Scanner scanner = new Scanner(System.in)) {
-            System.out.print("예매할 영화의 제목을 입력하세요: ");
+            System.out.print("\n 예매할 영화의 제목을 입력하세요: ");
             String selectedTitle = scanner.nextLine(); // 사용자로부터 영화 제목 입력받기
 
             boolean movieBooked = false; // 영화 예매 여부 확인 변수
