@@ -1,0 +1,46 @@
+[2024-10-24 11:28:22] DEBUG MemberController.doSelectOne(MemberController.java:78) - 1. inputData:rkdcofls
+[2024-10-24 11:28:22] DEBUG MemberController.doSelectOne(MemberController.java:81) - 2. param:MemberVO [memberId=rkdcofls, memberName=null, password=null, email=null, teamId=0, loginCount=0, regDt=null, roleName=null, toString()=com.pcwk.ehr.KCH.MemberVO@ecc7635]
+[2024-10-24 11:28:22] DEBUG MemberController.doSelectOne(MemberController.java:84) - 3. outVO:MemberVO [memberId=rkdcofls, memberName=admin, password=1030, email=rkdcofls3890@naver.com, teamId=1, loginCount=0, regDt=20020409, roleName=관리자, toString()=com.pcwk.ehr.KCH.MemberVO@ecc7635]
+[2024-10-24 12:14:54] DEBUG MemberController.doSelectOne(MemberController.java:78) - 1. inputData:rkdcofls
+[2024-10-24 12:14:54] DEBUG MemberController.doSelectOne(MemberController.java:81) - 2. param:MemberVO [memberId=rkdcofls, memberName=null, password=null, email=null, teamId=0, loginCount=0, regDt=null, roleName=null, toString()=com.pcwk.ehr.KCH.MemberVO@ecc7635]
+[2024-10-24 12:14:54] DEBUG MemberController.doSelectOne(MemberController.java:84) - 3. outVO:MemberVO [memberId=rkdcofls, memberName=admin, password=1030, email=rkdcofls3890@naver.com, teamId=1, loginCount=0, regDt=20020409, roleName=관리자, toString()=com.pcwk.ehr.KCH.MemberVO@ecc7635]
+[2024-10-24 13:40:02] DEBUG MemberController.doSelectOne(MemberController.java:78) - 1. inputData:rkdcofls
+[2024-10-24 13:40:02] DEBUG MemberController.doSelectOne(MemberController.java:81) - 2. param:MemberVO [memberId=rkdcofls, memberName=null, password=null, email=null, teamId=0, loginCount=0, regDt=null, roleName=null, toString()=com.pcwk.ehr.KCH.MemberVO@ecc7635]
+[2024-10-24 13:40:02] DEBUG MemberController.doSelectOne(MemberController.java:84) - 3. outVO:MemberVO [memberId=rkdcofls, memberName=admin, password=1030, email=rkdcofls3890@naver.com, teamId=1, loginCount=0, regDt=20020409, roleName=관리자, toString()=com.pcwk.ehr.KCH.MemberVO@ecc7635]
+[2024-10-24 14:22:55] DEBUG MemberController.doSelectOne(MemberController.java:91) - 1. inputData:rkdcofls
+[2024-10-24 14:22:55] DEBUG MemberController.doSelectOne(MemberController.java:94) - 2. param:MemberVO [memberId=rkdcofls, memberName=null, password=null, email=null, teamId=0, loginCount=0, regDt=null, roleName=null, toString()=com.pcwk.ehr.KCH.MemberVO@ecc7635]
+[2024-10-24 14:22:55] DEBUG MemberController.doSelectOne(MemberController.java:97) - 3. outVO:MemberVO [memberId=rkdcofls, memberName=admin, password=1030, email=rkdcofls3890@naver.com, teamId=1, loginCount=0, regDt=20020409, roleName=관리자, toString()=com.pcwk.ehr.KCH.MemberVO@ecc7635]
+[2024-10-24 14:23:17] DEBUG MemberController.doSelectOne(MemberController.java:91) - 1. inputData:rkdcofls
+[2024-10-24 14:23:17] DEBUG MemberController.doSelectOne(MemberController.java:94) - 2. param:MemberVO [memberId=rkdcofls, memberName=null, password=null, email=null, teamId=0, loginCount=0, regDt=null, roleName=null, toString()=com.pcwk.ehr.KCH.MemberVO@ecc7635]
+[2024-10-24 14:23:17] DEBUG MemberController.doSelectOne(MemberController.java:97) - 3. outVO:MemberVO [memberId=rkdcofls, memberName=admin, password=1030, email=rkdcofls3890@naver.com, teamId=1, loginCount=0, regDt=20020409, roleName=관리자, toString()=com.pcwk.ehr.KCH.MemberVO@ecc7635]
+[2024-10-24 14:24:31] DEBUG MemberController.doSelectOne(MemberController.java:91) - 1. inputData:rkdcofls
+[2024-10-24 14:24:31] DEBUG MemberController.doSelectOne(MemberController.java:94) - 2. param:MemberVO [memberId=rkdcofls, memberName=null, password=null, email=null, teamId=0, loginCount=0, regDt=null, roleName=null, toString()=com.pcwk.ehr.KCH.MemberVO@ecc7635]
+[2024-10-24 14:24:31] DEBUG MemberController.doSelectOne(MemberController.java:97) - 3. outVO:MemberVO [memberId=rkdcofls, memberName=admin, password=1030, email=rkdcofls3890@naver.com, teamId=1, loginCount=0, regDt=20020409, roleName=관리자, toString()=com.pcwk.ehr.KCH.MemberVO@ecc7635]
+[2024-10-24 14:25:33] DEBUG MemberController.doSelectOne(MemberController.java:78) - 1. inputData:rkdcofls
+[2024-10-24 14:25:33] DEBUG MemberController.doSelectOne(MemberController.java:81) - 2. param:MemberVO [memberId=rkdcofls, memberName=null, password=null, email=null, teamId=0, loginCount=0, regDt=null, roleName=null, toString()=com.pcwk.ehr.KCH.MemberVO@ecc7635]
+[2024-10-24 14:25:33] DEBUG MemberController.doSelectOne(MemberController.java:84) - 3. outVO:MemberVO [memberId=rkdcofls, memberName=admin, password=1030, email=rkdcofls3890@naver.com, teamId=1, loginCount=0, regDt=20020409, roleName=관리자, toString()=com.pcwk.ehr.KCH.MemberVO@ecc7635]
+[2024-10-24 15:40:01] DEBUG MemberController.doSelectOne(MemberController.java:78) - 1. inputData:rkdcofls
+[2024-10-24 15:40:01] DEBUG MemberController.doSelectOne(MemberController.java:81) - 2. param:MemberVO [memberId=rkdcofls, memberName=null, password=null, email=null, teamId=0, loginCount=0, regDt=null, roleName=null, toString()=com.pcwk.ehr.KCH.MemberVO@ecc7635]
+[2024-10-24 15:40:01] DEBUG MemberController.doSelectOne(MemberController.java:84) - 3. outVO:MemberVO [memberId=rkdcofls, memberName=admin, password=1030, email=rkdcofls3890@naver.com, teamId=1, loginCount=0, regDt=20020409, roleName=관리자, toString()=com.pcwk.ehr.KCH.MemberVO@ecc7635]
+[2024-10-24 15:40:56] DEBUG MemberController.doSave(MemberController.java:106) - 1. inputData:pcwk01,이상무01,4321,jamesol@paran.com,1,0,2024/10/17 14:33:00,일반
+[2024-10-24 15:40:56] DEBUG MemberController.doSave(MemberController.java:109) - 2. param:MemberVO [memberId=pcwk01, memberName=이상무01, password=4321, email=jamesol@paran.com, teamId=1, loginCount=0, regDt=2024/10/17 14:33:00, roleName=일반, toString()=com.pcwk.ehr.KCH.MemberVO@c4c98c67]
+[2024-10-24 15:40:56] DEBUG MemberController.doSave(MemberController.java:113) - 3. flag:1
+[2024-10-24 16:48:09] DEBUG MemberController.doSelectOne(MemberController.java:78) - 1. inputData:rkdcofls
+[2024-10-24 16:48:09] DEBUG MemberController.doSelectOne(MemberController.java:81) - 2. param:MemberVO [memberId=rkdcofls, memberName=null, password=null, email=null, teamId=0, loginCount=0, regDt=null, roleName=null, toString()=com.pcwk.ehr.KCH.MemberVO@ecc7635]
+[2024-10-24 16:48:09] DEBUG MemberController.doSelectOne(MemberController.java:84) - 3. outVO:MemberVO [memberId=rkdcofls, memberName=admin, password=1030, email=rkdcofls3890@naver.com, teamId=1, loginCount=0, regDt=20020409, roleName=관리자, toString()=com.pcwk.ehr.KCH.MemberVO@ecc7635]
+[2024-10-24 16:48:30] DEBUG MemberController.doSave(MemberController.java:106) - 1. inputData:pcwk01,이상무01,4321,jamesol@paran.com,1,0,2024/10/17 14:33:00,일반
+[2024-10-24 16:48:30] DEBUG MemberController.doSave(MemberController.java:109) - 2. param:MemberVO [memberId=pcwk01, memberName=이상무01, password=4321, email=jamesol@paran.com, teamId=1, loginCount=0, regDt=2024/10/17 14:33:00, roleName=일반, toString()=com.pcwk.ehr.KCH.MemberVO@c4c98c67]
+[2024-10-24 16:48:30] DEBUG MemberController.doSave(MemberController.java:113) - 3. flag:1
+[2024-10-24 16:48:43] DEBUG MemberController.doSelectOne(MemberController.java:78) - 1. inputData:pcwk01
+[2024-10-24 16:48:43] DEBUG MemberController.doSelectOne(MemberController.java:81) - 2. param:MemberVO [memberId=pcwk01, memberName=null, password=null, email=null, teamId=0, loginCount=0, regDt=null, roleName=null, toString()=com.pcwk.ehr.KCH.MemberVO@c4c98c67]
+[2024-10-24 16:48:43] DEBUG MemberController.doSelectOne(MemberController.java:84) - 3. outVO:MemberVO [memberId=pcwk01, memberName=이상무01, password=4321, email=jamesol@paran.com, teamId=1, loginCount=0, regDt=2024/10/17 14:33:00, roleName=일반, toString()=com.pcwk.ehr.KCH.MemberVO@c4c98c67]
+[2024-10-24 16:49:49] DEBUG MemberController.doUpdate(MemberController.java:29) - 1. inputData:pcwk01
+[2024-10-24 16:50:27] DEBUG MemberController.doUpdate(MemberController.java:29) - 1. inputData:pcwk02,이상무01,4321,jamesol@paran.com,1,0,2024/10/17 14:33:00,일반
+[2024-10-24 16:50:27] DEBUG MemberController.doUpdate(MemberController.java:32) - 2. param:MemberVO [memberId=pcwk02, memberName=이상무01, password=4321, email=jamesol@paran.com, teamId=1, loginCount=0, regDt=2024/10/17 14:33:00, roleName=일반, toString()=com.pcwk.ehr.KCH.MemberVO@c4c98c68]
+[2024-10-24 16:50:27] DEBUG MemberController.doUpdate(MemberController.java:36) - 3. flag:0
+[2024-10-24 16:50:56] DEBUG MemberController.doUpdate(MemberController.java:29) - 1. inputData:pcwk01,이상무01,4321,jamesol@paran.com,1,0,2024/10/17 14:33:00,일반
+[2024-10-24 16:50:56] DEBUG MemberController.doUpdate(MemberController.java:32) - 2. param:MemberVO [memberId=pcwk01, memberName=이상무01, password=4321, email=jamesol@paran.com, teamId=1, loginCount=0, regDt=2024/10/17 14:33:00, roleName=일반, toString()=com.pcwk.ehr.KCH.MemberVO@c4c98c67]
+[2024-10-24 16:50:56] DEBUG MemberController.doUpdate(MemberController.java:36) - 3. flag:2
+[2024-10-24 16:51:11] DEBUG MemberController.doDelete(MemberController.java:53) - 1. inputData:pcwk01
+[2024-10-24 16:51:11] DEBUG MemberController.doDelete(MemberController.java:55) - 2. param:MemberVO [memberId=pcwk01, memberName=null, password=null, email=null, teamId=0, loginCount=0, regDt=null, roleName=null, toString()=com.pcwk.ehr.KCH.MemberVO@c4c98c67]
+[2024-10-24 16:51:11] DEBUG MemberController.doDelete(MemberController.java:58) - 3. flag:1

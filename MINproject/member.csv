@@ -1,0 +1,5 @@
+memberId,memberName,password,email,teamId,loginCount,regDt,roleName
+rkdcofls,admin,1030,rkdcofls3890@naver.com,1,0,20020409,관리자
+yonjin,사용자1,1004,yongjin7660@gmail.com,1,0,20011004,일반 사용자
+tjdals,사용자2,1003,tjdals12345@icloud.com,1,0,19981103,일반 사용자
+pcwk01,이상무01,4321,jamesol@paran.com,1,0,2024/10/17 14:33:00,일반
